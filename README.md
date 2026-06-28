@@ -15,3 +15,4 @@
 *src* contiene código de software de control para todos los componentes programados para participar en la competición
 
 # Introducción
+En este repositorio se encuentra la documentación completa de nuestro trabajo para la categoría Future Engineers: desde el diseño mecánico y la selección de componentes, hasta el desarrollo del software, los protocolos de prueba y la evolución de nuestro prototipo.
