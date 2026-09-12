@@ -3,7 +3,6 @@
 
 * [1. Nuestro Equipo](#1-nuestro-equipo)
   * [1.1 Integrantes](#11-integrantes)
-  * [1.2 Orígenes](#12-orígenes)
 * [2. El Robot](#2-el-robot)
   * [2.1 Videos del Robot](#21-videos-del-robot)
   * [2.2 Apartado Mecánico](#22-apartado-mecánico)
@@ -17,25 +16,57 @@ Somos Kairos, un grupo de estudiantes universitarios dedicados a la robótica, l
 <table>
   <tr>
     <td width="30%" valign="top">
-      <img src="t-fotos/rosa.jpg" width="100%" alt="Rosalba Rodríguez">
+      <img src="T-photos/rosa.jpg" width="100%" alt="Rosalba Rodríguez">
     </td>
     <td valign="top">
       <h3>Rosalba Rodríguez</h3>
       <p>🎂 <b>Edad:</b> [21] años</p>
-      <p>🧑‍💻 <b>Rol:</b> Programación / Electrónica</p>
+      <p>🧑‍💻 <b>Rol:</b> Hardware / Electrónica</p>
       <hr>
       <p>🔩 <b>Habilidades:</b></p>
       <ul>
-        <li>Estudiante de Ing. Electrónica (Mención Telecomunicaciones).</li>
-        <li>Programación de microcontroladores y sensores.</li>
-        <li>Diseño y simulación de circuitos electrónicos.</li>
+        <li>Estudiante de Ing. Electrónica (Mención Automatización y Control).</li>
         <li>Desarrollo de sistemas de control para robótica autónoma.</li>
       </ul>
       <p>
     </td>
   </tr>
 </table>
-
+<table>
+  <tr>
+    <td width="30%" valign="top">
+      <img src="T-photos/vic.jpg" width="100%" alt="Victoria Perozo">
+    </td>
+    <td valign="top">
+      <h3>Victoria Perozo</h3>
+      <p>🎂 <b>Edad:</b> [20] años</p>
+      <p>🧑‍💻 <b>Rol:</b> Documentación y Hardware / Electrónica</p>
+      <hr>
+      <p>🔩 <b>Habilidades:</b></p>
+      <ul>
+        <li>Estudiante de Ing. Electrónica (Mención Telecomunicaciones).</li>
+        <li>Diseño y simulación de circuitos electrónicos.</li>
+        <li>Desarrollo de sistemas de control para robótica autónoma.</li>    </td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td width="30%" valign="top">
+      <img src="T-photos/ayrtong.jpg" width="100%" alt="Ayrton Mrarcano">
+    </td>
+    <td valign="top">
+      <h3>Ayrton Marcano</h3>
+      <p>🎂 <b>Edad:</b> [19] años</p>
+      <p>🧑‍💻 <b>Rol:</b> Programación / Electrónica</p>
+      <hr>
+      <p>🔩 <b>Habilidades:</b></p>
+      <ul>
+        <li>Estudiante de Ing. Informatica.</li>
+        <li>Programación de microcontroladores y sensores.</li>
+        <li>Desarrollo de sistemas de control para robótica autónoma.</li>
+    </td>
+  </tr>
+</table>
 ### 1.2 Orígenes
 Información sobre los orígenes.
 
