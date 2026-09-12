@@ -10,6 +10,7 @@
   * [2.1 Chasis y Estructura](#21-chasis-y-estructura)
   * [2.2 Sistema de Dirección](#22-sistema-de-dirección)
   * [2.3 Sistema de Tracción](#23-sistema-de-tracción)
+  * [2.4 Fotos del vehículo](#23-fotos-del-vehículo)
 * [3. Apartado Electrónico](#3-apartado-electrónico)
   * [3.1 Microcontrolador y Sensores](#31-microcontrolador-y-sensores)
   * [3.2 Controlador de Motores](#32-controlador-de-motores)
@@ -18,10 +19,7 @@
 * [4. Software y Control](#4-software-y-control)
   * [4.1 Visión Artificial](#41-visión-artificial)
   * [4.2 Algoritmo de Navegación](#42-algoritmo-de-navegación)
-* [5. Demostración y Pruebas](#5-demostración-y-pruebas)
-  * [5.1 Videos del Robot](#51-videos-del-robot)
   
-
 ---
 
 ## 1. Nuestro Equipo
@@ -107,6 +105,9 @@ Contenido (Github)
 
 ### 2.1 Chasis y Estructura
 Detalles de la estructura del vehículo.
+ Se ha diseñado e impreso en 3D un complejo sistema de suspensión delantera de brazos superpuestos (double-wishbone) con amortiguadores simulados. Esto no solo eleva el chasis, sino que garantiza que las ruedas mantengan un contacto constante y uniforme con el tapete, incluso al pasar sobre pequeñas irregularidades o cables, asegurando una tracción máxima y constante.
+Chasis Modular Elevado (Imagen 0): El chasis azul impreso en 3D ahora sitúa toda la electrónica crítica (Arduino Mega, portabaterías de 18650, driver de motores L298N) por encima del eje de las ruedas. Esto libera espacio inferior y evita cualquier tipo de rozamiento.
+Ruedas de Mayor Diámetro y Agarre: Se seleccionaron ruedas con un compuesto de goma con mejor coeficiente de fricción y mayor diámetro para contribuir a la elevación general y mejorar la capacidad de superar obstáculos menores.
 
 ### 2.2 Sistema de Dirección
 ### Servomotor: MG996R
@@ -224,6 +225,41 @@ Solución del diseño
 Durante la fase de ensamblaje se identificó un error de tolerancia en la impresión de los engranajes internos del diferencial (el anillo y los piñones satélite). Ante la imposibilidad de reimprimir estas piezas a tiempo para las pruebas, se sustituyó la caja del diferencial por un sistema de transmisión de eje rígido directo.
 
 Aunque esta modificación elimina la capacidad mecánica de variar la velocidad entre ambas ruedas al girar, el efecto se compensa a través de código: el software utiliza los datos del giroscopio para ajustar la aceleración y gestionar electrónicamente la trayectoria del vehículo en las curvas.
+
+### Fotos del vehículo
+
+### 1.2 Imágenes del Robot
+
+<table>
+  <tr>
+    <td align="center">
+      <b>Vista frontal</b><br>
+      <img src="V-fotos/Vista frontal.jpg" alt="Vista frontal" width="100%">
+    </td>
+    <td align="center">
+      <b>Vista posterior</b><br>
+      <img src="V-fotos/Vista trasera.jpg" alt="Vista posterior" width="100%">
+    </td>
+    <td align="center">
+      <b>Vista lateral izquierda</b><br>
+      <img src="V-fotos/Lateral izquierdo.jpg" alt="Vista lateral izquierda" width="100%">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <b>Vista lateral derecha</b><br>
+      <img src="V-fotos/Lateral derecho.jpg" alt="Vista lateral derecha" width="100%">
+    </td>
+    <td align="center">
+      <b>Vista superior</b><br>
+      <img src="V-fotos/Vista superior.jpg" alt="Vista superior" width="100%">
+    </td>
+    <td align="center">
+      <b>Vista inferior</b><br>
+      <img src="V-fotos/Vista inferior.jpg" alt="Vista inferior" width="100%">
+    </td>
+  </tr>
+</table>
 
 ## 3. Apartado Electrónico
 ### 3.1 Microcontrolador y Sensores
@@ -545,19 +581,564 @@ El conexionado eléctrico integral de potencia, distribución de buses y líneas
 > [!NOTE]
 > Optamos por un sistema de interconexión basado en cableado flexible (cables puente y cable UTP).
 
+## 1. Tabla Principal de Mapeo de Pines (Arduino Mega 2560)
+
+| Subsistema | Componente / Periférico | Pin Físico | Modo de operación / Protocolo de firmware |
+| :--- | :--- | :--- | :--- |
+| Dirección | Servomotor MG996R Digi High-Torque | Pin 8 | Salida PWM a 50 Hz (Control con Servo.h, rango restringido de 69° a 111°) |
+| Tracción | Controlador L298N - ENA (Velocidad) | Pin 2 | Modulación PWM (analogWrite de 8 bits, 0-255) |
+|  | Controlador L298N - IN1 (Sentido) | Pin 5 | Salida Digital: Estado ALTO (HIGH) para avance |
+|  | Controlador L298N - IN2 (Sentido) | Pin 6 | Salida Digital: Estado BAJO (LOW) para avance / ALTO para freno |
+| Orientación | Sensor Inercial IMU MPU6050 (SDA) | Pin 20 | Bus I2C - Línea de datos bidireccional (SDA a 400 kHz Fast-Mode) |
+|  | Sensor Inercial IMU MPU6050 (SCL) | Pin 21 | Bus I2C - Línea de reloj (SCL a 400 kHz Fast-Mode) |
+| Ultrasonido | HC-SR04 Frontal - TRIGGER | Pin 24 | Salida Digital: Disparo de pulso (10 µs) |
+|  | HC-SR04 Frontal - ECHO | Pin 26 | Entrada Digital: Tiempo de retorno medido mediante pulseIn() |
+|  | HC-SR04 Derecho - TRIGGER | Pin 38 | Salida Digital: Disparo de pulso (10 µs) |
+|  | HC-SR04 Derecho - ECHO | Pin 37 | Entrada Digital: Tiempo de retorno medido mediante pulseIn() |
+|  | HC-SR04 Izquierdo - TRIGGER | Pin 39 | Salida Digital: Disparo de pulso (10 µs) |
+|  | HC-SR04 Izquierdo - ECHO | Pin 40 | Entrada Digital: Tiempo de retorno medido mediante pulseIn() |
+
+### Cálculo de Autonomía Real en Pista
+
+### 2.2.2 Cálculo de Autonomía Real en Pista
+
+Considerando la capacidad real del banco de litio en configuración 3S ($V_{\text{nom}} = 11.1\text{V}$, $V_{\text{máx}} = 12.6\text{V}$) y una eficiencia promedio del $88\%$ ($\eta = 0.88$) en las conversiones Buck/Boost:
+
+$$I_{\text{promedio}} = \frac{P_{\text{total}}}{\eta \cdot V_{\text{bus}}} = \frac{8.67\text{ W}}{0.88 \cdot 11.1\text{ V}} \approx 0.89\text{ A} \quad \text{(a plena demanda dinámica en carrera)}$$
+
+$$T_{\text{autonomía, activo}} = \frac{3.5\text{ Ah}}{0.89\text{ A}} \approx 3.93\text{ Horas de Navegación Continua}$$
+
+$$T_{\text{autonomía, standby}} = \frac{3.5\text{ Ah}}{0.236\text{ A}} \approx 14.8\text{ Horas de Espera en Boxes}$$
+
+> 💡 Razonamiento del Consumo: Al operar a una tensión nominal superior ($11.1\text{V}$ con 3 celdas en serie), la demanda de corriente promedio se reduce a apenas $0.89\text{ A}$. Esto minimiza la caída por resistencia interna (*I²R*), evita el estrés térmico en las celdas y garantiza una curva de descarga extremadamente estable durante todas las mangas de competencia.
+
+---
+
+### Banco de Baterías 18650 3S (10.5V - 11.1V / 12.6V Máx) y Autonomía Teórica
+
+El suministro energético de la plataforma se basa en celdas de iones de litio de alta densidad energética en arreglo de 3 celdas en serie (3S):
+
+* Topología Eléctrica (3S): Tres celdas conectadas en serie:
+  $$V_{\text{nom}} = 3 \times 3.7\text{V} = 11.1\text{V CC} \quad (V_{\text{máx}} = 3 \times 4.2\text{V} = 12.6\text{V a plena carga})$$
+  $$C_{\text{total}} = 3500\text{ mAh} \quad (3.5\text{ Ah}) \implies E_{\text{disponible}} = 11.1\text{V} \times 3.5\text{ Ah} = 38.85\text{ Wh}$$
+
+* Estabilidad de Tensión Prolongada: La configuración 3S permite trabajar más cerca del rango óptimo de regulación de los convertidores, reduciendo el trabajo de elevación de voltaje y optimizando la eficiencia global del circuito.
+
+* Repetibilidad en Pista: El vehículo sostiene un rendimiento constante durante más de 3.5 horas de entrenamiento continuo sin caídas drásticas de torque en los motores de tracción ni reinicios en los sensores de la plataforma.
 
 ## 4. Software y Control
+Ronda abierta 
+
+Estructura y Funcionamiento del Código
+Navegación Híbrida (Ultrasonidos + MPU6050):
+
+Los sensores ultrasónicos (PIN_TRIG_FRONTAL, DERECHO, IZQUIERDO) miden constantemente el espacio libre para detectar las paredes y anticiparse a las curvas.
+
+El giroscopio MPU6050 se actualiza en segundo plano mediante la función actualizarMPU() para calcular con alta precisión la orientación actual del robot (Yaw), permitiéndole mantener la línea recta o girar exactamente 90 grados sin perder el rumbo.
+
+Control Estricto de Dirección (Servo):
+
+Utiliza los límites de calibración del servo (ANGULO_MINIMO de 69° y ANGULO_MAXIMO de 111° con centro en 90°) para evitar sobreesfuerzos mecánicos.
+
+Emplea un control proporcional (KP = 1.2f) para realizar correcciones suaves y dinámicas sobre el ángulo de las ruedas basándose en la distancia a los muros laterales.
+
+Conteo de Esquinas (Vueltas):
+
+El robot monitorea la distancia frontal (DISTANCIA_DETECCION_CURVA = 38.0f). Cuando se acerca a una pared o esquina, activa un giro controlado hacia la dirección predeterminada (GIRAR_HACIA_IZQUIERDA = true).
+
+Cada vez que completa un giro, incrementa la variable esquinas_contadas. Al llegar a las TOTAL_CURVAS_OBJETIVO = 12 (las 4 esquinas de cada una de las 3 vueltas), el programa frena los motores por completo y finaliza la carrera de forma autónoma.
+
+Esquive de Obstáculos Genéricos Integrado:
+
+Cuenta con una subrutina preventiva (DIST_DETECCION_OBSTACULO = 45.0f) que le permite evaluar si hay un objeto imprevisto en la pista, comparando los lados izquierdo y derecho para decidir hacia qué costado maniobrar de forma segura antes de retomar el circuito.
+
+Diagnóstico por Monitor Serie:
+
+Gracias a la directiva #define DEBUG_SERIAL 1, el sistema imprime constantemente en tiempo real los valores de los sensores y el estado del robot, lo que facilita enormemente la depuración y calibración en la pista de competencia.
+/**
+ * ============================================================================
+ * WRO FUTURE ENGINEERS - NAVEGACIÓN HÍBRIDA (ULTRASONIDOS + MPU6050)
+ * + ESQUIVE DE OBSTÁCULOS GENÉRICOS + DIAGNÓSTICO POR SERIAL
+ * IDE: Arduino IDE
+ *
+ * Código COMPLETO unificado.
+ * INCLUYE: Calibración estricta de ±21 grados para el servo MG996R.
+ * (Centro: 90°, Mínimo: 69°, Máximo: 111°)
+ * ============================================================================
+ */
+
+#include <Arduino.h>
+#include <Servo.h>
+#include <Wire.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+
+// ========================================================
+// MAPEO DE PINES 
+// ========================================================
+constexpr uint8_t PIN_SERVO_DIRECCION = 8;
+constexpr uint8_t PIN_L298N_ENA = 2;
+constexpr uint8_t PIN_L298N_IN1 = 5;
+constexpr uint8_t PIN_L298N_IN2 = 6;
+
+constexpr uint8_t PIN_TRIG_FRONTAL = 24;
+constexpr uint8_t PIN_ECHO_FRONTAL = 26;
+constexpr uint8_t PIN_TRIG_DERECHO = 38;
+constexpr uint8_t PIN_ECHO_DERECHO = 37;
+constexpr uint8_t PIN_TRIG_IZQUIERDO = 39;
+constexpr uint8_t PIN_ECHO_IZQUIERDO = 40;
+
+// ========================================================
+// CONFIGURACIÓN DE COMPETENCIA
+// ========================================================
+constexpr int TOTAL_CURVAS_OBJETIVO = 12;
+constexpr float DISTANCIA_DETECCION_CURVA = 38.0f;
+
+constexpr bool GIRAR_HACIA_IZQUIERDA = true;
+
+constexpr int VELOCIDAD_AVANCE = 140;
+constexpr int VELOCIDAD_FRENADO = 0;
+constexpr int VELOCIDAD_GIRO = 120;
+
+// --- CALIBRACIÓN EXACTA DEL SERVO ---
+constexpr int SERVO_CENTRO = 90;
+constexpr int DEFLEXION_MAXIMA = 21; // <-- Aplicado tu límite de ±21 grados
+constexpr int ANGULO_MINIMO = SERVO_CENTRO - DEFLEXION_MAXIMA; // 69 grados
+constexpr int ANGULO_MAXIMO = SERVO_CENTRO + DEFLEXION_MAXIMA; // 111 grados
+
+constexpr float KP = 1.2f;
+constexpr float MAX_DIST_VALIDA = 80.0f;
+
+// --------------------------------------------------------
+// ESQUIVAR OBSTÁCULOS GENÉRICOS
+// --------------------------------------------------------
+constexpr float DIST_DETECCION_OBSTACULO = 45.0f; // mayor que DISTANCIA_DETECCION_CURVA
+constexpr float DIST_MARGEN_LIBRE = 30.0f;        // umbral para considerar un lado "libre"
+constexpr int VELOCIDAD_ESQUIVE = 110;
+
+bool esquivando_obstaculo = false;
+
+// --------------------------------------------------------
+// DIAGNÓSTICO POR SERIAL
+// --------------------------------------------------------
+#define DEBUG_SERIAL 1
+unsigned long tiempo_ultimo_debug = 0;
+
+// ========================================================
+// VARIABLES GLOBALES
+// ========================================================
+Servo servoDireccion;
+Adafruit_MPU6050 mpu;
+
+int esquinas_contadas = 0;
+bool carrera_terminada = false;
+unsigned long tiempo_ultimo_giro = 0;
+constexpr unsigned long COOLDOWN_GIRO_MS = 1200;
+
+float dist_izq_filtrada = 0.0f;
+float dist_der_filtrada = 0.0f;
+
+float yaw_actual = 0.0f;
+float gz_offset = 0.0f;
+unsigned long tiempo_ultimo_mpu = 0;
+
+// ========================================================
+// FUNCIONES AUXILIARES
+// ========================================================
+void actualizarMPU() {
+  unsigned long tiempo_actual_us = micros();
+  if (tiempo_actual_us - tiempo_ultimo_mpu >= 2000) {
+    float dt = (tiempo_actual_us - tiempo_ultimo_mpu) / 1000000.0f;
+    tiempo_ultimo_mpu = tiempo_actual_us;
+
+    sensors_event_t a, g, temp;
+    mpu.getEvent(&a, &g, &temp);
+
+    float gz = g.gyro.z - gz_offset;
+    if (abs(gz) > 0.015f) {
+      yaw_actual += (gz * RAD_TO_DEG) * dt;
+    }
+  }
+}
+
+float leerUltrasonico(uint8_t pinTrig, uint8_t pinEcho) {
+  digitalWrite(pinTrig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(pinTrig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pinTrig, LOW);
+
+  long duracion = pulseIn(pinEcho, HIGH, 30000); // ~5m máx, timeout generoso para diagnosticar
+  if (duracion == 0) return MAX_DIST_VALIDA; // sin eco = "sin obstáculo válido"
+  return (duracion * 0.0343f) / 2.0f;
+}
+<img width="1280" height="698" alt="photo_4983786265832525412_y" src="https://github.com/user-attachments/assets/50e86716-610d-43da-a47a-3521cc9f4bea" />
+
+Ronda Cerrada
+
+Este código implementa la estrategia para la Segunda Ronda de la categoría Future Engineers de la WRO, la cual incorpora la prueba de evasión de obstáculos (pilares o bloques distribuidos en la pista) además de completar el recorrido.
+
+Diferenciación entre Esquina y Obstáculo: El sistema evalúa el sensor frontal. Si la distancia es menor a DIST_DETECCION_OBSTACULO (45 cm), el código discierne si se trata de una pared de una esquina (cuando ambos lados están bloqueados) o de un obstáculo flotante en la pista (cuando al menos un lateral está libre).
+
+Maniobra de Esquive Dinámico: Al detectar un obstáculo y verificar qué costado tiene mayor espacio libre (izq_libre o der_libre), el robot ajusta el ángulo del servo hacia el lado óptimo y reduce la velocidad de tracción (VELOCIDAD_ESQUIVE) para rodear la pieza con precisión.
+
+Navegación por Carril (Control Proporcional): Fuera de las situaciones de esquive o giros de 90 grados, el sistema calcula el error entre los sensores ultrasónicos izquierdo y derecho aplicando la constante KP = 1.2f para mantener el vehículo centrado en las rectas.
+
+Protección Mecánica del Servo: Todas las órdenes de dirección pasan por la función escribirServo(), la cual restringe estrictamente el movimiento entre el ángulo mínimo (69°) y el máximo (111°), tomando como base el centro de 90° para proteger el mecanismo de la dirección.
+
+Control de Giro por Giroscopio (MPU6050): Al llegar a una esquina real, frena momentáneamente e integra el ángulo de "Yaw" medido por el giroscopio para asegurar un giro preciso de 90 grados antes de reanudar la marcha y contabilizar la esquina.
+
+ * ============================================================================
+ * WRO FUTURE ENGINEERS - NAVEGACIÓN HÍBRIDA (ULTRASONIDOS + MPU6050)
+ * + ESQUIVE DE OBSTÁCULOS GENÉRICOS + DIAGNÓSTICO POR SERIAL
+ * IDE: Arduino IDE
+ *
+ * Código COMPLETO unificado.
+ * INCLUYE: Calibración estricta de ±21 grados para el servo MG996R.
+ * (Centro: 90°, Mínimo: 69°, Máximo: 111°)
+ * ============================================================================
+ */#include <Arduino.h>#include <Servo.h>#include <Wire.h>#include <Adafruit_MPU6050.h>#include <Adafruit_Sensor.h>
+
+// ========================================================
+// MAPEO DE PINES 
+// ========================================================
+constexpr uint8_t PIN_SERVO_DIRECCION = 8;
+constexpr uint8_t PIN_L298N_ENA = 2;
+constexpr uint8_t PIN_L298N_IN1 = 5;
+constexpr uint8_t PIN_L298N_IN2 = 6;
+
+constexpr uint8_t PIN_TRIG_FRONTAL = 24;
+constexpr uint8_t PIN_ECHO_FRONTAL = 26;
+constexpr uint8_t PIN_TRIG_DERECHO = 38;
+constexpr uint8_t PIN_ECHO_DERECHO = 37;
+constexpr uint8_t PIN_TRIG_IZQUIERDO = 39;
+constexpr uint8_t PIN_ECHO_IZQUIERDO = 40;
+
+// ========================================================
+// CONFIGURACIÓN DE COMPETENCIA
+// ========================================================
+constexpr int TOTAL_CURVAS_OBJETIVO = 12;
+constexpr float DISTANCIA_DETECCION_CURVA = 38.0f;
+
+constexpr bool GIRAR_HACIA_IZQUIERDA = true;
+
+constexpr int VELOCIDAD_AVANCE = 140;
+constexpr int VELOCIDAD_FRENADO = 0;
+constexpr int VELOCIDAD_GIRO = 120;
+
+// --- CALIBRACIÓN EXACTA DEL SERVO ---
+constexpr int SERVO_CENTRO = 90;
+constexpr int DEFLEXION_MAXIMA = 21; // <-- Aplicado tu límite de ±21 grados
+constexpr int ANGULO_MINIMO = SERVO_CENTRO - DEFLEXION_MAXIMA; // 69 grados
+constexpr int ANGULO_MAXIMO = SERVO_CENTRO + DEFLEXION_MAXIMA; // 111 grados
+
+constexpr float KP = 1.2f;
+constexpr float MAX_DIST_VALIDA = 80.0f;
+
+// --------------------------------------------------------
+// ESQUIVAR OBSTÁCULOS GENÉRICOS
+// --------------------------------------------------------
+constexpr float DIST_DETECCION_OBSTACULO = 45.0f; // mayor que DISTANCIA_DETECCION_CURVA
+constexpr float DIST_MARGEN_LIBRE = 30.0f;        // umbral para considerar un lado "libre"
+constexpr int VELOCIDAD_ESQUIVE = 110;
+
+bool esquivando_obstaculo = false;
+
+// --------------------------------------------------------
+// DIAGNÓSTICO POR SERIAL
+// --------------------------------------------------------#define DEBUG_SERIAL 1
+unsigned long tiempo_ultimo_debug = 0;
+
+// ========================================================
+// VARIABLES GLOBALES
+// ========================================================
+Servo servoDireccion;
+Adafruit_MPU6050 mpu;
+
+int esquinas_contadas = 0;
+bool carrera_terminada = false;
+unsigned long tiempo_ultimo_giro = 0;
+constexpr unsigned long COOLDOWN_GIRO_MS = 1200;
+
+float dist_izq_filtrada = 0.0f;
+float dist_der_filtrada = 0.0f;
+
+float yaw_actual = 0.0f;
+float gz_offset = 0.0f;
+unsigned long tiempo_ultimo_mpu = 0;
+
+// ========================================================
+// FUNCIONES AUXILIARES
+// ========================================================
+void actualizarMPU() {
+  unsigned long tiempo_actual_us = micros();
+  if (tiempo_actual_us - tiempo_ultimo_mpu >= 2000) {
+    float dt = (tiempo_actual_us - tiempo_ultimo_mpu) / 1000000.0f;
+    tiempo_ultimo_mpu = tiempo_actual_us;
+
+    sensors_event_t a, g, temp;
+    mpu.getEvent(&a, &g, &temp);
+
+    float gz = g.gyro.z - gz_offset;
+    if (abs(gz) > 0.015f) {
+      yaw_actual += (gz * RAD_TO_DEG) * dt;
+    }
+  }
+}
+
+float leerUltrasonico(uint8_t pinTrig, uint8_t pinEcho) {
+  digitalWrite(pinTrig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(pinTrig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(pinTrig, LOW);
+
+  long duracion = pulseIn(pinEcho, HIGH, 30000); // ~5m máx, timeout generoso para diagnosticar
+  if (duracion == 0) return MAX_DIST_VALIDA; // sin eco = "sin obstáculo válido"
+  return (duracion * 0.0343f) / 2.0f;
+}
+void moverMotor(int velocidad) {
+  if (velocidad > 0) {
+    digitalWrite(PIN_L298N_IN1, HIGH);
+    digitalWrite(PIN_L298N_IN2, LOW);
+    analogWrite(PIN_L298N_ENA, constrain(velocidad, 0, 255));
+  } else if (velocidad < 0) {
+    digitalWrite(PIN_L298N_IN1, LOW);
+    digitalWrite(PIN_L298N_IN2, HIGH);
+    analogWrite(PIN_L298N_ENA, constrain(-velocidad, 0, 255));
+  } else {
+    digitalWrite(PIN_L298N_IN1, LOW);
+    digitalWrite(PIN_L298N_IN2, LOW);
+    analogWrite(PIN_L298N_ENA, 0);
+  }
+}
+
+void escribirServo(int grados) {
+  // Asegura estrictamente que el servo no pase de tus 69 y 111 grados
+  int angulo_seguro = constrain(grados, ANGULO_MINIMO, ANGULO_MAXIMO);
+  servoDireccion.write(angulo_seguro);
+}
+
+// ========================================================
+// SETUP Y CALIBRACIÓN
+// ========================================================
+void setup() {
+  Serial.begin(115200);
+  Wire.begin();
+  Wire.setClock(400000);
+
+  pinMode(PIN_TRIG_FRONTAL, OUTPUT); pinMode(PIN_ECHO_FRONTAL, INPUT);
+  pinMode(PIN_TRIG_DERECHO, OUTPUT); pinMode(PIN_ECHO_DERECHO, INPUT);
+  pinMode(PIN_TRIG_IZQUIERDO, OUTPUT); pinMode(PIN_ECHO_IZQUIERDO, INPUT);
+
+  pinMode(PIN_L298N_ENA, OUTPUT);
+  pinMode(PIN_L298N_IN1, OUTPUT);
+  pinMode(PIN_L298N_IN2, OUTPUT);
+  moverMotor(0);
+
+  servoDireccion.attach(PIN_SERVO_DIRECCION);
+  escribirServo(SERVO_CENTRO);#if DEBUG_SERIAL
+  Serial.println(F("=== TEST DE SENSORES ANTES DE ARRANCAR ==="));
+  for (int i = 0; i < 5; i++) {
+    float f = leerUltrasonico(PIN_TRIG_FRONTAL, PIN_ECHO_FRONTAL);
+    float l = leerUltrasonico(PIN_TRIG_IZQUIERDO, PIN_ECHO_IZQUIERDO);
+    float r = leerUltrasonico(PIN_TRIG_DERECHO, PIN_ECHO_DERECHO);
+    Serial.print(F("Frontal: ")); Serial.print(f);
+    Serial.print(F(" cm | Izquierdo: ")); Serial.print(l);
+    Serial.print(F(" cm | Derecho: ")); Serial.print(r);
+    Serial.println(F(" cm"));
+    delay(300);
+  }
+  Serial.println(F("=== Si algún valor se queda fijo en 80.00, ese sensor no responde ==="));#endif
+
+  if (!mpu.begin()) {#if DEBUG_SERIAL
+    Serial.println(F("ERROR: MPU6050 no detectado. Revisa cableado I2C."));#endif
+    while (1) { delay(10); }
+  }
+
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+
+  delay(1000);
+  float acumulador = 0;
+  for (int i = 0; i < 500; i++) {
+    sensors_event_t a, g, temp;
+    mpu.getEvent(&a, &g, &temp);
+    acumulador += g.gyro.z;
+    delay(2);
+  }
+  gz_offset = acumulador / 500.0f;
+  yaw_actual = 0.0f;
+  tiempo_ultimo_mpu = micros();
+
+  delay(2000);
+  dist_izq_filtrada = leerUltrasonico(PIN_TRIG_IZQUIERDO, PIN_ECHO_IZQUIERDO);
+  dist_der_filtrada = leerUltrasonico(PIN_TRIG_DERECHO, PIN_ECHO_DERECHO);#if DEBUG_SERIAL
+  Serial.println(F("=== Arrancando en 3 segundos... ==="));
+  delay(3000);#endif
+
+  moverMotor(VELOCIDAD_AVANCE);
+}
+
+// ========================================================
+// LOOP PRINCIPAL
+// ========================================================
+void loop() {
+  unsigned long tiempo_actual = millis();
+
+  actualizarMPU();
+
+  if (esquinas_contadas >= TOTAL_CURVAS_OBJETIVO) {
+    if (!carrera_terminada) {
+      moverMotor(0);
+      escribirServo(SERVO_CENTRO);
+      carrera_terminada = true;#if DEBUG_SERIAL
+      Serial.println(F("=== CARRERA TERMINADA ==="));#endif
+    }
+    return;
+  }
+
+  float dist_front = leerUltrasonico(PIN_TRIG_FRONTAL, PIN_ECHO_FRONTAL);
+  actualizarMPU();
+  float dist_izq_raw = leerUltrasonico(PIN_TRIG_IZQUIERDO, PIN_ECHO_IZQUIERDO);
+  actualizarMPU();
+  float dist_der_raw = leerUltrasonico(PIN_TRIG_DERECHO, PIN_ECHO_DERECHO);
+
+  dist_izq_filtrada = (dist_izq_raw * 0.4f) + (dist_izq_filtrada * 0.6f);
+  dist_der_filtrada = (dist_der_raw * 0.4f) + (dist_der_filtrada * 0.6f);
+
+  bool izq_libre = dist_izq_filtrada > DIST_MARGEN_LIBRE;
+  bool der_libre = dist_der_filtrada > DIST_MARGEN_LIBRE;
+#if DEBUG_SERIAL
+  // Imprime cada ~200ms para no saturar el Serial Monitor
+  if (tiempo_actual - tiempo_ultimo_debug > 200) {
+    tiempo_ultimo_debug = tiempo_actual;
+    Serial.print(F("F=")); Serial.print(dist_front);
+    Serial.print(F(" I=")); Serial.print(dist_izq_filtrada);
+    Serial.print(F(" D=")); Serial.print(dist_der_filtrada);
+    Serial.print(F(" | IzqLibre=")); Serial.print(izq_libre);
+    Serial.print(F(" DerLibre=")); Serial.print(der_libre);
+    Serial.print(F(" | esquinas=")); Serial.print(esquinas_contadas);
+    Serial.print(F(" | esquivando=")); Serial.println(esquivando_obstaculo);
+  }#endif
+
+  // --------------------------------------------------------
+  // Si hay algo al frente: decidir PARED DE ESQUINA vs OBSTÁCULO
+  // --------------------------------------------------------
+  if (dist_front < DIST_DETECCION_OBSTACULO) {
+
+    bool es_pared_de_esquina = (!izq_libre && !der_libre)
+                               && (dist_front < DISTANCIA_DETECCION_CURVA)
+                               && (tiempo_actual - tiempo_ultimo_giro > COOLDOWN_GIRO_MS);
+
+    if (es_pared_de_esquina) {#if DEBUG_SERIAL
+      Serial.println(F(">>> PARED DE ESQUINA DETECTADA: girando 90 grados"));#endif
+      moverMotor(VELOCIDAD_FRENADO);
+      delay(100);
+
+      float yaw_objetivo = yaw_actual + (GIRAR_HACIA_IZQUIERDA ? 90.0f : -90.0f);
+
+      escribirServo(GIRAR_HACIA_IZQUIERDA ? ANGULO_MAXIMO : ANGULO_MINIMO);
+      moverMotor(VELOCIDAD_GIRO);
+
+      unsigned long inicio_giro = millis();
+      while (abs(yaw_actual - yaw_objetivo) > 4.0f) {
+        actualizarMPU();
+        if (millis() - inicio_giro > 2000) {#if DEBUG_SERIAL
+          Serial.println(F(">>> TIMEOUT en giro (posible atasco o MPU sin responder)"));#endif
+          yaw_actual = yaw_objetivo;
+          break;
+        }
+      }
+
+      esquinas_contadas++;
+      tiempo_ultimo_giro = millis();
+      esquivando_obstaculo = false;
+
+      escribirServo(SERVO_CENTRO);
+      moverMotor(VELOCIDAD_AVANCE);
+
+      dist_izq_filtrada = leerUltrasonico(PIN_TRIG_IZQUIERDO, PIN_ECHO_IZQUIERDO);
+      dist_der_filtrada = leerUltrasonico(PIN_TRIG_DERECHO, PIN_ECHO_DERECHO);
+
+      return;
+    }
+    else if (izq_libre || der_libre) {#if DEBUG_SERIAL
+      Serial.println(F(">>> OBSTACULO DETECTADO: esquivando"));#endif
+      esquivando_obstaculo = true;
+
+      bool girar_hacia_izquierda_ahora =
+          izq_libre && (!der_libre || dist_izq_filtrada >= dist_der_filtrada);
+
+      escribirServo(girar_hacia_izquierda_ahora ? ANGULO_MAXIMO : ANGULO_MINIMO);
+      moverMotor(VELOCIDAD_ESQUIVE);
+      return;
+    }#if DEBUG_SERIAL
+    else {
+      Serial.println(F(">>> Objeto muy cerca, sin espacio a ningun lado: avanzando normal"));
+    }#endif
+  }
+  else if (esquivando_obstaculo) {
+    esquivando_obstaculo = false;
+    escribirServo(SERVO_CENTRO);
+    moverMotor(VELOCIDAD_AVANCE);
+  }
+
+  // Control Proporcional para centrado de carril en rectas
+  float error = 0.0f;
+
+  if (dist_izq_filtrada < MAX_DIST_VALIDA && dist_der_filtrada < MAX_DIST_VALIDA) {
+    error = dist_izq_filtrada - dist_der_filtrada;
+  }
+  else if (dist_izq_filtrada < MAX_DIST_VALIDA) {
+    error = dist_izq_filtrada - 20.0f;
+  }
+  else if (dist_der_filtrada < MAX_DIST_VALIDA) {
+    error = 20.0f - dist_der_filtrada;
+  }
+
+  if (abs(error) < 2.0f) {
+    error = 0;
+  }
+
+  float correccion = error * KP;
+  // escribirServo limitará internamente a los ±21 grados que definimos al inicio
+  escribirServo(SERVO_CENTRO + (int)correccion);
+
+  if (!esquivando_obstaculo) {
+    moverMotor(VELOCIDAD_AVANCE);
+  }
+
+  <img width="1280" height="698" alt="photo_4983786265832525413_y" src="https://github.com/user-attachments/assets/5f2bb9bc-e4ef-4873-8678-b241bc1240a1" />
+
+
 
 ### 4.1 Visión Artificial
 Procesamiento de imagen y detección de señales/líneas.
+Procesamiento de imagen integrado y detección de líneas/señales para navegación autónoma.
+
+La integración de la HuskyLens 2 en el sistema aporta procesamiento de visión artificial embebido, evitando saturar el microcontrolador principal con la carga pesada de procesar pixeles. Sus dos funciones clave para el guiado son:
+
+Procesamiento de Imagen a Bordo: El sensor cuenta con un procesador de inteligencia artificial interno (KPU) que maneja de forma nativa la captura, el filtrado de ruido, la corrección de iluminación y el reconocimiento de patrones. Esto permite entregar directamente al controlador (como un Arduino o ESP32) las coordenadas simplificadas de los objetos o vectores detectados a través de protocolos como I2C o UART, en lugar de matrices de imagen crudas.
+
+Detección de Líneas y Seguimiento: Utiliza algoritmos optimizados de rastreo de trayectorias. La HuskyLens procesa en tiempo real el flujo de la pista, calcula el vector de dirección o ángulo de desviación (coordenadas de los extremos de la línea) y permite que el sistema de control corrija el rumbo de manera fluida.
+
+Reconocimiento de Señales y Etiquetas: Mediante aprendizaje supervisado (AI object tracking o códigos visuales/etiquetas), el módulo identifica marcas geométricas, cruces o señales impresas en el trayecto. Al reconocerlas, genera una ID única que el microprocesador lee instantáneamente para activar eventos lógicos (giros, paradas o cambios de velocidad).
 
 ### 4.2 Algoritmo de Navegación
 Lógica de esquivar obstáculos y recorrido.
 
-## 5. Demostración y Pruebas
+Lógica de esquiva de obstáculos y recorrido.
 
-### 5.1 Videos del Robot
-Enlaces a pruebas y funcionamiento en pista.
+El flujo de control para la navegación autónoma combina la información visual de la HuskyLens 2 con datos de proximidad (sensores ultrasónicos o infrarrojos) y odometría para lograr un desplazamiento fluido y seguro. La estructura del algoritmo se divide en los siguientes bloques de decisión:
+
+Control de Recorrido (Path Tracking): El microcontrolador procesa el vector de dirección o el ángulo de error entregado en tiempo real por la HuskyLens 2. Mediante un lazo de control, se ajusta la velocidad o el ángulo de dirección para mantener el robot centrado en la trayectoria marcada, corrigiendo desvíos de forma dinámica.
+
+Monitoreo de Proximidad: En paralelo al seguimiento de pista, se lee constantemente el estado de los sensores de distancia frontales y laterales. Si un objeto imprevisto irrumpe en el radio de seguridad, el sistema prioriza la seguridad física del robot por encima del seguimiento visual.
+
+Maniobra de Evasión (Bypass): Al detectar un obstáculo en la ruta, el algoritmo ejecuta una secuencia evasiva: desaceleración controlada, giro para rodear el objeto, avance de compensación y reorientación para buscar nuevamente la línea o el punto de control del circuito.
+
+Gobernanza por Máquina de Estados: Un sistema de estados finitos gestiona las prioridades de movimiento, alternando entre el modo de Seguimiento de Ruta y el modo de Evasión de Obstáculos, asegurando que el robot retome su rumbo original de manera automática una vez que el camino se encuentre despejado.
 
 ---
 
