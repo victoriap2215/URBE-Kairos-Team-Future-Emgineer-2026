@@ -116,7 +116,94 @@ Contenido (Github)
 Detalles de la estructura del vehículo.
 
 ### 2.2 Sistema de Dirección
-Mecanismo de dirección (Ackermann).
+### Servomotor: MG996R
+
+<table>
+  <tr>
+    <td width="30%" valign="top" align="center">
+      <br>
+      <img src="Schemes/servo.jpeg" width="100%" alt="Servomotor MG996R">
+    </td>
+    <td valign="top">
+      <h4>Especificaciones:</h4>
+      <table>
+        <tr><td><b>Velocidad de operación</b></td><td>0.14 s/60°</td></tr>
+        <tr><td><b>Voltaje de operación</b></td><td>6v DC</td></tr>
+        <tr><td><b>Corriente de operación</b></td><td>500 mA – 900 mA</td></tr>
+        <tr><td><b>Corriente de bloqueo</b></td><td>2.5 A</td></tr>
+        <tr><td><b>Par de bloqueo</b></td><td>11.0 kg·cm</td></tr>
+        <tr><td><b>Material de engranajes</b></td><td>metálico</td></tr>
+        <tr><td><b>Peso</b></td><td>55 g</td></tr>
+        <tr><td><b>Tipo de servo</b></td><td>Estándar / Posicional (180°)</td></tr>
+        <tr><td><b>Datasheet</b></td><td><a href="URL_DEL_DATASHEET" target="_blank">MG996R Tower-Pro</a></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+### Dimensión mecánica
+<img width="554" height="554" alt="dim servo" src="https://github.com/user-attachments/assets/8e2e092c-3abc-4616-ac3c-88ba25568cd2" />
+
+Para hacer una buena elección se hizo la comparación con el micro-servo SG90. Aunque ambos se controlan por PWM y tienen un recorrido de 180°, el SG90 usa engranajes de plástico, opera a un voltaje de 4.8V y entrega un torque máximo de apenas 1.8 kg·cm, lo que lo hace más propenso al desgaste en sus engranajes o romperse debido al peso del chasis en movimiento, en cambio, el MG996R ofrece un torque de bloqueo que alcanza aproximadamente 11 kg·cm a 6V, por lo que dispone de un margen de trabajo mucho mayor para vencer la resistencia del sistema de varillas, la fricción del pivote y las irregularidades de la pista, lo que le da la robustez necesaria para mantener la alineación de las ruedas y reducir el desgaste en el sistema de varillas de dirección. 
+
+*Motivo de la elección:* 
+
+Para la dirección del robot, elegimos el servomotor MG996R de giro estándar, por su buena resistencia mecánica y sus engranajes metálicos, que son importantes para soportar las cargas del eje delantero. Además, su control por PWM facilita conectarlo directamente con el microcontrolador, lo que permite una respuesta rápida y precisa. 
+
+La dirección fue diseñada bajo la geometría Ackermann porque se busca que el robot tenga un giro más suave y eficiente, reduciendo el deslizamiento de las ruedas. A diferencia de un sistema de dirección paralela, esta configuración mejora la maniobrabilidad en espacios pequeños y ayuda a mantener una alineación más exacta al estacionar o esquivar obstáculos. 
+
+*Justificación técnica:* 
+
+<img width="739" height="415" alt="ackerman" src="https://github.com/user-attachments/assets/5671c373-5921-40fd-9804-6f53a83f14fa" />
+
+Utilizamos un sistema de dirección Ackermann diseñado y fabricado a medida mediante impresión 3D. Este mecanismo permite que las ruedas delanteras giren con ángulos ligeramente diferentes en cada curva, de modo que ambas sigan trayectorias concéntricas hacia un mismo punto sobre el eje trasero. Esta configuración mejora la estabilidad y la precisión en los giros cerrados. El diseño fue ajustado de forma interactiva en FreeCAD, modificando los puntos de giros y los ángulos de dirección hasta lograr una aproximación adecuada a la configuración Ackermann. 
+
+La calibración del sistema se realizó verificando la posición neutra del servomotor antes del montaje definitivo, es decir, lo primero que se realizó fue conectar el servo al Arduino y ordenarle un ángulo de 90° antes de su montaje, para así asegurar que el motor estuviera centrado y no forzar ni romper las piezas. Con el servo fijo en ese punto, se procedió al montaje del brazo de dirección y acoplamiento de las varillas de la geometría Ackermann intentando que las ruedas delanteras quedaran lo más centradas posible. A partir de esa referencia, se hicieron pruebas en la pista y ajustes en el código para corregir desviaciones y asegurar que el giro a ambos lados fuera simétrico. De esta manera, se aseguró que el sistema quedara centrado y que las correcciones de dirección respondieran con precisión a las órdenes del microcontrolador.  
+
+La geometría Ackermann fue adaptada a las dimensiones y curvas de la pista para asegurar que el vehículo tuviera buena reacción a las curvas cerradas y la mínima pérdida de adherencia posible. Por consiguiente, se ajustaron los ángulos de dirección y la posición de los puntos de giro en el modelo impreso en 3D, buscando que las ruedas delanteras trazaran una trayectoria coherente con el radio de curvatura de la pista durante las maniobras. Este ajuste permitió mejorar la estabilidad del robot, especialmente en cambios de dirección bruscos y en el paso por obstáculos. 
+
+*Cálculos:* 
+Para hacer una buena elección se hizo la comparación con el micro-servo SG90. Aunque ambos se controlan por PWM y tienen un recorrido de 180°, el SG90 usa engranajes de plástico, opera a un voltaje de 4.8V y entrega un torque máximo de apenas 1.8 kg·cm, lo que lo hace más propenso al desgaste en sus engranajes o romperse debido al peso del chasis en movimiento, en cambio, el MG996R ofrece un torque de bloqueo que alcanza aproximadamente 11 kg·cm a 6V, por lo que dispone de un margen de trabajo mucho mayor para vencer la resistencia del sistema de varillas, la fricción del pivote y las irregularidades de la pista, lo que le da la robustez necesaria para mantener la alineación de las ruedas y reducir el desgaste en el sistema de varillas de dirección. 
+
+Motivo de la elección: 
+
+Para la dirección del robot, elegimos el servomotor MG996R de giro estándar, por su buena resistencia mecánica y sus engranajes metálicos, que son importantes para soportar las cargas del eje delantero. Además, su control por PWM facilita conectarlo directamente con el microcontrolador, lo que permite una respuesta rápida y precisa. 
+
+La dirección fue diseñada bajo la geometría Ackermann porque se busca que el robot tenga un giro más suave y eficiente, reduciendo el deslizamiento de las ruedas. A diferencia de un sistema de dirección paralela, esta configuración mejora la maniobrabilidad en espacios pequeños y ayuda a mantener una alineación más exacta al estacionar o esquivar obstáculos. 
+
+Justificación técnica: 
+
+    
+
+Calibración e implementación: 
+
+ 
+
+Utilizamos un sistema de dirección Ackermann diseñado y fabricado a medida mediante impresión 3D. Este mecanismo permite que las ruedas delanteras giren con ángulos ligeramente diferentes en cada curva, de modo que ambas sigan trayectorias concéntricas hacia un mismo punto sobre el eje trasero. Esta configuración mejora la estabilidad y la precisión en los giros cerrados. El diseño fue ajustado de forma interactiva en FreeCAD, modificando los puntos de giros y los ángulos de dirección hasta lograr una aproximación adecuada a la configuración Ackermann. 
+
+La calibración del sistema se realizó verificando la posición neutra del servomotor antes del montaje definitivo, es decir, lo primero que se realizó fue conectar el servo al Arduino y ordenarle un ángulo de 90° antes de su montaje, para así asegurar que el motor estuviera centrado y no forzar ni romper las piezas. Con el servo fijo en ese punto, se procedió al montaje del brazo de dirección y acoplamiento de las varillas de la geometría Ackermann intentando que las ruedas delanteras quedaran lo más centradas posible. A partir de esa referencia, se hicieron pruebas en la pista y ajustes en el código para corregir desviaciones y asegurar que el giro a ambos lados fuera simétrico. De esta manera, se aseguró que el sistema quedara centrado y que las correcciones de dirección respondieran con precisión a las órdenes del microcontrolador.  
+
+La geometría Ackermann fue adaptada a las dimensiones y curvas de la pista para asegurar que el vehículo tuviera buena reacción a las curvas cerradas y la mínima pérdida de adherencia posible. Por consiguiente, se ajustaron los ángulos de dirección y la posición de los puntos de giro en el modelo impreso en 3D, buscando que las ruedas delanteras trazaran una trayectoria coherente con el radio de curvatura de la pista durante las maniobras. Este ajuste permitió mejorar la estabilidad del robot, especialmente en cambios de dirección bruscos y en el paso por obstáculos. 
+
+*Cálculos:* 
+
+### Ecuación Fundamental
+cot(θ o ) - cot(θ i ) = W / L
+
+W : Distancia entre pivotes de dirección (batalla)
+L : Distancia entre ejes
+
+### Relación de Velocidades en Curva
+ω o / ω i = (R + W/2) / (R - W/2)
+
+ω o : Velocidad angular de la rueda exterior.
+ω i : Velocidad angular de la rueda interior.
+R : Radio de giro del centro del eje.
+
+*Montaje:* 
+
+El servomotor está en una plataforma de soporte frontal integrada en el chasis, la cual conecta con el varillaje del mecanismo de dirección.  El diseño modular permite realizar ajustes o cambios de componentes de manera sencilla. 
+
 
 ### 2.3 Sistema de Tracción
 ### Motor: Motorreductor DC
@@ -172,7 +259,6 @@ Aunque esta modificación elimina la capacidad mecánica de variar la velocidad 
 Descripción de piezas diseñadas e impresas.
 
 ## 3. Apartado Electrónico
-
 ### 3.1 Microcontrolador y Sensores
 Cámara, MPU6050, sensores ultrasónicos, etc.
 
