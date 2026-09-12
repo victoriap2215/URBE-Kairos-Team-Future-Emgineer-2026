@@ -1,4 +1,54 @@
-# Contenido (Github) 
+# Índice
+# Índice
+
+* [1. Nuestro Equipo](#1-nuestro-equipo)
+  * [1.1 Integrantes](#11-integrantes)
+  * [1.2 Orígenes](#12-orígenes)
+* [2. El Robot](#2-el-robot)
+  * [2.1 Videos del Robot](#21-videos-del-robot)
+  * [2.2 Apartado Mecánico](#22-apartado-mecánico)
+    * [2.2.1 Impresión 3D](#221-impresión-3d)
+
+---
+
+## 1. Nuestro Equipo
+Somos Kairos, un grupo de estudiantes universitarios dedicados a la robótica, la automatización y la innovación tecnológica. 
+### 1.1 Integrantes
+<table>
+  <tr>
+    <td width="30%" valign="top">
+      <img src="t-fotos/rosa.jpg" width="100%" alt="Rosalba Rodríguez">
+    </td>
+    <td valign="top">
+      <h3>Rosalba Rodríguez</h3>
+      <p>🎂 <b>Edad:</b> [21] años</p>
+      <p>🧑‍💻 <b>Rol:</b> Programación / Electrónica</p>
+      <hr>
+      <p>🔩 <b>Habilidades:</b></p>
+      <ul>
+        <li>Estudiante de Ing. Electrónica (Mención Telecomunicaciones).</li>
+        <li>Programación de microcontroladores y sensores.</li>
+        <li>Diseño y simulación de circuitos electrónicos.</li>
+        <li>Desarrollo de sistemas de control para robótica autónoma.</li>
+      </ul>
+      <p>
+    </td>
+  </tr>
+</table>
+
+### 1.2 Orígenes
+Información sobre los orígenes.
+
+## 2. El Robot
+
+### 2.1 Videos del Robot
+Videos del robot.
+
+### 2.2 Apartado Mecánico
+
+#### 2.2.1 Impresión 3D
+Detalles sobre impresión 3D.
+Contenido (Github) 
 *t-photos* contiene fotos del equipo
 
 *v-photos* contiene 6 fotos del vehículo desde varios ángulos
